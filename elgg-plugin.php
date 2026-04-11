@@ -1,8 +1,6 @@
 <?php
 
 return [
-	'bootstrap' => \Cropper\Bootstrap::class,
-
 	'hooks' => [
 		'view_vars' => [
 			'input/file' => [
