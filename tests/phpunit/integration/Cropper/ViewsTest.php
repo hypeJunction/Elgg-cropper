@@ -23,13 +23,13 @@ class ViewsTest extends IntegrationTestCase {
 	 * Build an \Elgg\Hook object for view_vars, input/file with the given return value.
 	 */
 	protected function makeHook(array $return): \Elgg\Hook {
-		return new \Elgg\Hook(
-			_elgg_services()->hooks->getEvents(),
-			'view_vars',
-			'input/file',
-			[],
-			$return
-		);
+		$hook = $this->getMockBuilder(\Elgg\Hook::class)->getMock();
+		$hook->method('getName')->willReturn('view_vars');
+		$hook->method('getType')->willReturn('input/file');
+		$hook->method('getValue')->willReturn($return);
+		$hook->method('getParam')->willReturnCallback(function ($key, $default = null) { return $default; });
+		$hook->method('getParams')->willReturn([]);
+		return $hook;
 	}
 
 	public function testReturnsVoidWhenUseCropperNotSet(): void {
