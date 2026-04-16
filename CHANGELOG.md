@@ -1,3 +1,18 @@
+# 4.0.0 (2026-04-16)
+
+### Migration: Elgg 3.x → 4.x
+
+- Removed `start.php` / `autoloader.php`; replaced with class-based `Cropper\Views` hook handler
+- Removed `manifest.xml`; all plugin metadata now in `elgg-plugin.php` under `'plugin'` key
+- Updated `composer.json` to Elgg 4.x constraints (`php >=7.4`, `elgg/elgg ^4.0`, `installer ^2.0`)
+- Switched vendor JS asset to Elgg 4.x `'views'` file-mapping (direct path to bower-asset/cropper)
+- Removed `js/cropper.js.php` readfile view; JS now served via `elgg-plugin.php` views mapping
+- Updated CSS view to use `__DIR__`-relative vendor path
+- Fixed: undefined `$height` bug in `input/cropper.php` height calculation
+- Fixed: replaced `md5(serialize($vars))` HTML ID fallback with `uniqid()`
+
+---
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/hypeJunction/Elgg-cropper/compare/1.0.2...v1.1.0) (2016-01-25)
 
