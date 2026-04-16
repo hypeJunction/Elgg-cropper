@@ -20,7 +20,7 @@ if (!isset($ratio)) {
 $x = 0;
 $y = 0;
 $width = 200;
-$height = $height * $ratio;
+$height = 200 * $ratio;
 
 $x1 = (int) elgg_extract('x1', $vars, 0);
 $y1 = (int) elgg_extract('y1', $vars, 0);
@@ -62,7 +62,7 @@ foreach (['x1', 'y1', 'x2', 'y2'] as $coord) {
 
 $id = elgg_extract('id', $vars);
 if (!$id) {
-	$id = md5(serialize($vars));
+	$id = 'cropper-' . uniqid();
 }
 
 $file_input_id = false;

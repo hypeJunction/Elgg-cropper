@@ -20,6 +20,19 @@ echo "MySQL is ready."
 
 cd /var/www/html
 
+# Elgg core ships bundled plugins under vendor/elgg/elgg/mod/. They need to
+# be reachable via /var/www/html/mod/ for the plugin loader to find them.
+# Symlink any core plugin that isn't already bind-mounted by the per-plugin
+# compose stack — the bind mount always wins.
+if [ -d /var/www/html/vendor/elgg/elgg/mod ]; then
+    for core_plugin_dir in /var/www/html/vendor/elgg/elgg/mod/*/; do
+        core_plugin_id=$(basename "${core_plugin_dir}")
+        if [ ! -e "/var/www/html/mod/${core_plugin_id}" ]; then
+            ln -s "${core_plugin_dir%/}" "/var/www/html/mod/${core_plugin_id}"
+        fi
+    done
+fi
+
 if [ ! -f /var/www/html/.elgg-installed ]; then
     echo "Installing Elgg 4.x..."
 
@@ -71,17 +84,66 @@ SETTINGS_VALUES
         echo 'Elgg 4.x installed successfully.' . PHP_EOL;
     " 2>&1 || echo "Install completed (check for errors above)."
 
-    echo "Activating plugin: ${PLUGIN_ID}"
+    echo "Activating plugins..."
     php -r "
         require_once 'vendor/autoload.php';
         \$app = \Elgg\Application::getInstance();
         \$app->bootCore();
         _elgg_services()->plugins->generateEntities();
+
+        // Resolve dep plugin IDs from the plugin's own metadata.
+        // Priority: elgg-plugin.php 'plugin.dependencies' (Elgg 4.x) then manifest.xml <requires type='plugin'>.
+        // IDs are lowercased to match mod/ directory names.
+        // Deps not present in mod/ are skipped with a warning — this naturally excludes
+        // deps that are unsafe to activate (e.g. unmigrated plugins not volume-mounted).
+        \$dep_ids = [];
+        \$plugin_file = '/var/www/html/mod/${PLUGIN_ID}/elgg-plugin.php';
+        if (file_exists(\$plugin_file)) {
+            \$manifest = include \$plugin_file;
+            foreach (array_keys(\$manifest['plugin']['dependencies'] ?? []) as \$id) {
+                \$dep_ids[] = strtolower(\$id);
+            }
+        }
+        if (empty(\$dep_ids)) {
+            \$xml_file = '/var/www/html/mod/${PLUGIN_ID}/manifest.xml';
+            if (file_exists(\$xml_file)) {
+                \$xml = simplexml_load_file(\$xml_file);
+                foreach (\$xml->requires ?? [] as \$req) {
+                    if ((string)\$req->type === 'plugin') {
+                        \$dep_ids[] = strtolower((string)\$req->name);
+                    }
+                }
+            }
+        }
+
+        foreach (\$dep_ids as \$dep_id) {
+            \$dep = elgg_get_plugin_from_id(\$dep_id);
+            if (!\$dep) {
+                echo 'WARNING: dep plugin ' . \$dep_id . ' not in mod/ — skipping (not mounted).' . PHP_EOL;
+                continue;
+            }
+            if (\$dep->isActive()) {
+                echo 'Dep plugin ' . \$dep_id . ' already active.' . PHP_EOL;
+                continue;
+            }
+            try {
+                \$dep->activate();
+                echo 'Dep plugin ' . \$dep_id . ' activated.' . PHP_EOL;
+            } catch (\Throwable \$e) {
+                echo 'FAILED to activate dep ' . \$dep_id . ': ' . \$e->getMessage() . PHP_EOL;
+                exit(1);
+            }
+        }
+
+        // Activate the main plugin.
         \$plugin = elgg_get_plugin_from_id('${PLUGIN_ID}');
         if (!\$plugin) {
             echo 'ERROR: plugin ${PLUGIN_ID} not found at /var/www/html/mod/${PLUGIN_ID}' . PHP_EOL;
             exit(1);
         }
+        // Move to end of load order so every dep is positioned before it.
+        // Elgg 4.x's position check rejects activation when a dep loads later.
+        \$plugin->setPriority('last');
         if (\$plugin->isActive()) {
             echo 'Plugin ${PLUGIN_ID} already active.' . PHP_EOL;
         } else {
@@ -93,6 +155,11 @@ SETTINGS_VALUES
                 exit(1);
             }
         }
+
+        // Clear system cache so view paths and hook registrations are fresh.
+        elgg_reset_system_cache();
+        elgg_flush_system_cache();
+        echo 'System cache cleared.' . PHP_EOL;
     " 2>&1 || echo "Plugin activation completed (check for errors above)."
 
     touch /var/www/html/.elgg-installed
