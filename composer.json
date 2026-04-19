@@ -5,7 +5,11 @@
 	"description": "Cropper form input for Elgg",
 	"homepage": "http://hypejunction.com",
 	"keywords": [
-		"elgg", "plugin", "image", "crop", "cropper"
+		"elgg",
+		"plugin",
+		"image",
+		"crop",
+		"cropper"
 	],
 	"license": "GPL-2.0-or-later",
 	"authors": [
@@ -32,6 +36,9 @@
 		}
 	},
 	"extra": {
-		"installer-name": "cropper"
+		"installer-name": "cropper",
+		"elgg-plugin": {
+			"id": "cropper"
+		}
 	}
 }
