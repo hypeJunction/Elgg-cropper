@@ -5,7 +5,7 @@ namespace Cropper;
 use Elgg\IntegrationTestCase;
 
 /**
- * Tests for \Cropper\Views hook handler on input/file view_vars.
+ * Tests for \Cropper\Views event handler on input/file view_vars.
  */
 class ViewsTest extends IntegrationTestCase {
 
@@ -20,16 +20,16 @@ class ViewsTest extends IntegrationTestCase {
 	}
 
 	/**
-	 * Build an \Elgg\Hook object for view_vars, input/file with the given return value.
+	 * Build an \Elgg\Event object for view_vars, input/file with the given return value.
 	 */
-	protected function makeHook(array $return): \Elgg\Hook {
-		$hook = $this->getMockBuilder(\Elgg\Hook::class)->getMock();
-		$hook->method('getName')->willReturn('view_vars');
-		$hook->method('getType')->willReturn('input/file');
-		$hook->method('getValue')->willReturn($return);
-		$hook->method('getParam')->willReturnCallback(function ($key, $default = null) { return $default; });
-		$hook->method('getParams')->willReturn([]);
-		return $hook;
+	protected function makeHook(array $return): \Elgg\Event {
+		$event = $this->getMockBuilder(\Elgg\Event::class)->disableOriginalConstructor()->getMock();
+		$event->method('getName')->willReturn('view_vars');
+		$event->method('getType')->willReturn('input/file');
+		$event->method('getValue')->willReturn($return);
+		$event->method('getParam')->willReturnCallback(function ($key, $default = null) { return $default; });
+		$event->method('getParams')->willReturn([]);
+		return $event;
 	}
 
 	public function testReturnsVoidWhenUseCropperNotSet(): void {

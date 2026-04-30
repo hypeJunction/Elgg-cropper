@@ -10,13 +10,13 @@ class Views {
 	/**
 	 * Add cropper class selector to file input
 	 *
-	 * @param \Elgg\Hook $hook "view_vars", "input/file"
+	 * @param \Elgg\Event $event "view_vars", "input/file"
 	 * @return array|void
 	 */
-	public static function fileInputViewVars(\Elgg\Hook $hook) {
+	public static function fileInputViewVars(\Elgg\Event $event) {
 		static $iterator;
 
-		$return = $hook->getValue();
+		$return = $event->getValue();
 
 		$cropper_params = elgg_extract('use_cropper', $return);
 		if ($cropper_params) {

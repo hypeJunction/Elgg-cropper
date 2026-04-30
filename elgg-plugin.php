@@ -5,7 +5,7 @@ return [
 		'id' => 'cropper',
 		'name' => 'Cropper',
 		'description' => 'Cropper form input for Elgg',
-		'version' => '4.0.0',
+		'version' => '5.0.0',
 		'author' => 'Ismayil Khayredinov',
 		'categories' => ['ui'],
 	],
@@ -16,7 +16,7 @@ return [
 		],
 	],
 
-	'hooks' => [
+	'events' => [
 		'view_vars' => [
 			'input/file' => [
 				\Cropper\Views::class . '::fileInputViewVars' => [],
