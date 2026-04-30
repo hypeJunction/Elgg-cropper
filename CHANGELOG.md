@@ -1,3 +1,18 @@
+# 5.0.0 (2026-04-30)
+
+### Migration: Elgg 4.x → 5.x
+
+- Bumped `composer.json` constraints: `php >=8.2`, `elgg/elgg ^5.0`
+- Migrated `'hooks'` → `'events'` key in `elgg-plugin.php` (Elgg 5.x unified
+  the hooks and events systems into a single `'events'` registry)
+- Replaced `\Elgg\Hook` parameter type hint with `\Elgg\Event` in
+  `Cropper\Views::fileInputViewVars()`
+- Updated PHPUnit `ViewsTest` to mock `\Elgg\Event` instead of `\Elgg\Hook`
+- Bumped Docker stack: `php:7.4-apache` → `php:8.2-apache`,
+  `mysql:5.7` → `mysql:8.0`, site composer `elgg/elgg 4.3.6` → `~5.1.0`
+
+---
+
 # 4.0.0 (2026-04-16)
 
 ### Migration: Elgg 3.x → 4.x

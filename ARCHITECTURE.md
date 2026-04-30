@@ -1,8 +1,8 @@
-# cropper — Architecture (Elgg 4.x)
+# cropper — Architecture (Elgg 5.x)
 
 ## Plugin Summary
 
-`cropper` is a UI utility plugin that provides an image-cropping form input widget for Elgg 4.x.
+`cropper` is a UI utility plugin that provides an image-cropping form input widget for Elgg 5.x.
 It extends the core `input/file` view with a cropper overlay, allowing consumers to accept a file
 upload alongside crop coordinates in a single form field.
 
@@ -13,10 +13,10 @@ Other plugins use it by passing `use_cropper => true` (or a config array) to `el
 ```
 cropper/
 ├── classes/Cropper/
-│   └── Views.php            — Hook handler: adds CSS class to file input view vars
-├── docker/                  — Per-plugin Elgg 4.x test stack
+│   └── Views.php            — Event handler: adds CSS class to file input view vars
+├── docker/                  — Per-plugin Elgg 5.x test stack
 │   ├── docker-compose.yml
-│   ├── Dockerfile           — PHP 7.4 + Elgg 4.3.6
+│   ├── Dockerfile           — PHP 8.2 + Elgg ~5.1.0
 │   ├── elgg-composer.json   — Site-level composer (includes asset-packagist.org)
 │   └── elgg-install.sh      — Install + activate script
 ├── languages/
@@ -25,7 +25,7 @@ cropper/
 │   ├── phpunit.xml
 │   ├── bootstrap.php
 │   └── phpunit/integration/Cropper/
-│       ├── ViewsTest.php        — Unit tests for the hook handler
+│       ├── ViewsTest.php        — Unit tests for the event handler
 │       └── ViewExtensionsTest.php — Integration tests for view rendering
 ├── views/default/
 │   ├── elements/input/file/
@@ -37,10 +37,13 @@ cropper/
 └── elgg-plugin.php
 ```
 
-## Registered Hooks / Events
+## Registered Events
 
-| Hook | Type | Handler | Description |
-|------|------|---------|-------------|
+In Elgg 5.x, hooks and events are unified under the `'events'` key. The
+`view_vars` event is the 5.x equivalent of the 4.x `view_vars` hook.
+
+| Event | Type | Handler | Description |
+|-------|------|---------|-------------|
 | `view_vars` | `input/file` | `Cropper\Views::fileInputViewVars` | Adds `file-input-has-cropper` CSS class and ensures the input has an `id` attribute when `use_cropper` is set |
 
 ## View Extensions
@@ -50,7 +53,7 @@ cropper/
 | `input/file` | `elements/input/file/cropper` | Injects the cropper widget below the file input |
 | `css/elgg` | `input/cropper.css` | Loads cropper vendor CSS + layout styles |
 
-## Views File Mapping (Elgg 4.x)
+## Views File Mapping (Elgg 5.x)
 
 | View | Source File | Description |
 |------|-------------|-------------|
@@ -62,7 +65,8 @@ None. This is a pure UI utility plugin.
 
 ## Dependencies
 
-- `elgg/elgg: ^4.0`
+- `php: >=8.2`
+- `elgg/elgg: ^5.0`
 - `bower-asset/cropper: ~2.1` via [asset-packagist.org](https://asset-packagist.org)
   - Must be installed with `composer install` in the plugin directory
   - Provides the cropper.js AMD module and vendor CSS
@@ -87,6 +91,21 @@ echo elgg_view('input/file', [
     ],
 ]);
 ```
+
+## Migration Notes (4.x → 5.x)
+
+- Bumped `composer.json` constraints: `php >=8.2`, `elgg/elgg ^5.0`
+- Migrated `'hooks'` → `'events'` key in `elgg-plugin.php` (Elgg 5.x unified
+  the hooks and events systems)
+- Updated `Cropper\Views::fileInputViewVars()` parameter type hint from
+  `\Elgg\Hook` to `\Elgg\Event` and renamed the parameter from `$hook` to
+  `$event`
+- Updated PHPUnit test mock builder to instantiate `\Elgg\Event` instead of
+  `\Elgg\Hook` (with `disableOriginalConstructor` since `\Elgg\Event`
+  requires runtime arguments)
+- Bumped Docker stack: `php:7.4-apache` → `php:8.2-apache`,
+  `mysql:5.7` → `mysql:8.0`, site composer `elgg/elgg 4.3.6` → `~5.1.0`,
+  compose project name `${PLUGIN_ID}-elgg4` → `${PLUGIN_ID}-elgg5`
 
 ## Migration Notes (3.x → 4.x)
 
