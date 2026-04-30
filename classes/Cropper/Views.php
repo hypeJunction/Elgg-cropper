@@ -2,6 +2,9 @@
 
 namespace Cropper;
 
+/**
+ * View hook handlers for the cropper plugin.
+ */
 class Views {
 
 	/**
