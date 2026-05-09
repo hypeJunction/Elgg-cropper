@@ -78,8 +78,7 @@ echo elgg_format_element('div', [
 	'data-ratio' => $ratio,
 ], $body);
 ?>
-<script>
-	require(['input/cropper'], function(input) {
-		input.init('#<?= $id ?>');
-	});
+<script type="module">
+	import lib from 'js/input/cropper';
+	lib.init('#<?= $id ?>');
 </script>

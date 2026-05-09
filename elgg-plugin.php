@@ -5,7 +5,7 @@ return [
 		'id' => 'cropper',
 		'name' => 'Cropper',
 		'description' => 'Cropper form input for Elgg',
-		'version' => '5.0.0',
+		'version' => '6.0.0',
 		'author' => 'Ismayil Khayredinov',
 		'categories' => ['ui'],
 	],

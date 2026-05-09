@@ -1,3 +1,14 @@
+# 6.0.0 (2026-05-09)
+
+### Migration: Elgg 5.x → 6.x
+
+- Bumped `composer.json`: `php >=8.1`, `elgg/elgg ~6.1.0`, added `ext-intl`; version `6.0.0`
+- Converted `views/default/js/input/cropper.js` from AMD to ES module (`import`/`export default`)
+- Replaced inline AMD `require(['input/cropper'], cb)` in `input/cropper.php` with `<script type="module">` ES import
+- Docker stack updated to Elgg 6.x (PHPUnit ^10.5)
+
+---
+
 # 5.0.0 (2026-04-30)
 
 ### Migration: Elgg 4.x → 5.x

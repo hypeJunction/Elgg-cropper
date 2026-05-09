@@ -1,8 +1,8 @@
-# cropper — Architecture (Elgg 5.x)
+# cropper — Architecture (Elgg 6.x)
 
 ## Plugin Summary
 
-`cropper` is a UI utility plugin that provides an image-cropping form input widget for Elgg 5.x.
+`cropper` is a UI utility plugin that provides an image-cropping form input widget for Elgg 6.x.
 It extends the core `input/file` view with a cropper overlay, allowing consumers to accept a file
 upload alongside crop coordinates in a single form field.
 
@@ -118,3 +118,11 @@ echo elgg_view('input/file', [
 - Updated `input/cropper.css.php` to use `__DIR__`-relative path to vendor CSS
 - Fixed bug: `$height = $height * $ratio` referenced undefined `$height`; changed to `200 * $ratio`
 - Fixed: replaced `md5(serialize($vars))` HTML ID fallback with `uniqid()`
+
+## Migration Notes (5.x → 6.x)
+
+- `composer.json`: `php >=8.1`, `elgg/elgg ~6.1.0`, added `ext-intl`; version bumped `1.1.0 → 6.0.0`
+- `elgg-plugin.php`: version bumped `5.0.0 → 6.0.0`
+- `views/default/js/input/cropper.js`: converted AMD `define(function(require){...})` to ES module (`import`/`export default`)
+- `views/default/input/cropper.php`: replaced inline AMD `require(['input/cropper'], cb)` with `<script type="module">` ES import
+- Docker stack updated to Elgg 6.x
