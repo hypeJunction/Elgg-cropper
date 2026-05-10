@@ -1,6 +1,6 @@
 Cropper for Elgg
 ================
-![Elgg 5.x](https://img.shields.io/badge/Elgg-5.x-orange.svg?style=flat-square)
+![Elgg 7.x](https://img.shields.io/badge/Elgg-7.x-orange.svg?style=flat-square)
 
 Responsive image cropping input for Elgg
 
@@ -52,9 +52,14 @@ echo elgg_view('input/file', array(
 $coords = get_input('cover_crop_coords');
 ```
 
-
 ### Notes
 
 1. In your action, be sure to use the same image source for cropping. If you passed master image source to the file input,
 you will need to implement the logic for both new file upload and master image, as cropping coordinates may change even without new
 file upload.
+
+## Compatibility
+
+| Plugin version | Elgg version |
+|---|---|
+| current | 7.x |
