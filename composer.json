@@ -1,6 +1,5 @@
 {
     "name": "hypejunction/cropper",
-    "version": "7.0.0",
     "type": "elgg-plugin",
     "description": "Cropper form input for Elgg",
     "homepage": "https://github.com/hypeJunction/Elgg-cropper",
