@@ -1,44 +1,44 @@
 {
-	"name": "hypejunction/cropper",
-	"version": "1.1.0",
-	"type": "elgg-plugin",
-	"description": "Cropper form input for Elgg",
-	"homepage": "http://hypejunction.com",
-	"keywords": [
-		"elgg",
-		"plugin",
-		"image",
-		"crop",
-		"cropper"
-	],
-	"license": "GPL-2.0-or-later",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
-		}
-	],
-	"require": {
-		"php": ">=7.4",
-		"composer/installers": "^2.0",
-		"elgg/elgg": "^4.0",
-		"bower-asset/cropper": "~2.1"
-	},
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://asset-packagist.org"
-		}
-	],
-	"config": {
-		"allow-plugins": {
-			"composer/installers": true
-		}
-	},
-	"extra": {
-		"installer-name": "cropper",
-		"elgg-plugin": {
-			"id": "cropper"
-		}
-	}
+    "name": "hypejunction/cropper",
+    "version": "4.0.0",
+    "type": "elgg-plugin",
+    "description": "Cropper form input for Elgg",
+    "homepage": "http://hypejunction.com",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "image",
+        "crop",
+        "cropper"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "info@hypejunction.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^2.0",
+        "elgg/elgg": "^4.0",
+        "bower-asset/cropper": "~2.1"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "extra": {
+        "installer-name": "cropper",
+        "elgg-plugin": {
+            "id": "cropper"
+        }
+    }
 }
