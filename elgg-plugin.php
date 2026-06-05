@@ -12,7 +12,7 @@ return [
 
 	'views' => [
 		'default' => [
-			'js/cropper.js' => __DIR__ . '/vendor/bower-asset/cropper/dist/cropper.min.js',
+			'js/cropper.js' => __DIR__ . '/vendors/cropper/cropper.min.js',
 		],
 	],
 
