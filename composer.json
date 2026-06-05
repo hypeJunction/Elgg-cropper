@@ -16,15 +16,8 @@
         "php": ">=8.3",
         "composer/installers": "^2.0",
         "elgg/elgg": "~7.0.0",
-        "ext-intl": "*",
-        "bower-asset/cropper": "~2.1"
+        "ext-intl": "*"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "config": {
         "allow-plugins": {
             "composer/installers": true
