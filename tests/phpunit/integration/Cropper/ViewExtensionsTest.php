@@ -31,8 +31,11 @@ class ViewExtensionsTest extends IntegrationTestCase {
 		$this->assertTrue(elgg_view_exists('input/cropper.css'));
 	}
 
-	public function testCropperJsViewExists(): void {
-		$this->assertTrue(elgg_view_exists('js/cropper.js') || elgg_view_exists('input/cropper'));
+	public function testCropperEsmModulesExist(): void {
+		// Vendored Cropper is exposed as the importmap entry `cropper.mjs`,
+		// the input widget module as `js/input/cropper.mjs` (Elgg 7 ESM).
+		$this->assertTrue(elgg_view_exists('cropper.mjs'));
+		$this->assertTrue(elgg_view_exists('js/input/cropper.mjs'));
 	}
 
 	public function testFileInputExtensionIsBlankWithoutUseCropper(): void {
